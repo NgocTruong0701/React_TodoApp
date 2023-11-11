@@ -1,0 +1,23 @@
+.input{
+    width: 300px;
+    height: 20px;
+    font-family: 'Arial', sans-serif;
+    font-style: italic;
+    font-size: 25px;
+    padding: 10px;
+    margin-bottom: 20px;
+    
+}
+
+/* Thiết lập kiểu đường viền */
+.input[type="text"] {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Hiệu ứng khi focus vào input */
+.input[type="text"]:focus {
+    outline: none;
+    border-color: #007bff; /* Màu sắc khi focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Đổ bóng khi focus */
+}

@@ -1,0 +1,39 @@
+.todoItem {
+    padding: 15px;
+    border: 1px solid gray;
+}
+
+input[type="checkbox"] {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-right: 10px;
+    appearance: none;
+    /* Reset các kiểu mặc định của trình duyệt */
+    outline: none;
+    /* Loại bỏ đường viền mà trình duyệt tự thêm */
+    cursor: pointer;
+    /* Biểu tượng chuột khi di chuột qua checkbox */
+
+    /* Tạo custom checkbox sử dụng pseudo-element ::before */
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid gray !important;
+    /* Màu sắc đường viền của checkbox */
+    background-color: #fff;
+    /* Màu sắc nền của checkbox */
+    border-radius: 50%;
+}
+
+/* Tạo màu sắc khi checkbox được chọn */
+input[type="checkbox"]:checked {
+    background-color: #007bff; /* Màu sắc nền khi checkbox được chọn */
+    border-color: #007bff; /* Màu sắc đường viền khi checkbox được chọn */
+}
+
+.checkedLabel{
+    color: gray;
+    text-decoration: line-through;
+}
