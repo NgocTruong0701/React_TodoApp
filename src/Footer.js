@@ -7,7 +7,14 @@ export default class Footer extends React.Component {
 
     render() {
         return (
-            <h3>Footer</h3>
+            <div className='footerContainer'>
+                <div className='countItem'></div>
+                <div className='actionButton'>
+                    <button className='button'>All</button>
+                    <button className='button'>Active</button>
+                    <button className='button'>Completed</button>
+                </div>
+            </div>
         )
     }
 }

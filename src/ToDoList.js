@@ -12,7 +12,7 @@ export default class TodoList extends React.Component {
             <div className="ListTodoItem">
                 {
                     this.props.todo.map(item => {
-                       return <TodoItem id={item.id} value={item.text} status={item.status} changeStatus={this.props.changeStatus}/>
+                       return <TodoItem id={item.id} value={item.text} status={item.status} changeStatus={this.props.changeStatus} editing={this.props.editing}/>
                     })
                 }
             </div>

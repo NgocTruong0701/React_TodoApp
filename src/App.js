@@ -41,12 +41,26 @@ class App extends React.Component {
     this.setState({ todos: updatedTodos });
   }
 
+  editing = (id, newValue) => {
+    const updatedTodos = this.state.todos.map((todo) => {
+      if(todo.id === id){
+        return {
+          ...todo,
+          text: newValue,
+        }
+      }
+      return todo;
+    });
+
+    this.setState({ todos: updatedTodos });
+  }
+
   render(){
       return(
       <div className = "App" >
         <h1>todos</h1>
         <ToDoHeader addTodoItem = {this.addTodoItem}/>
-        <TodoList todo={this.state.todos} changeStatus={this.changeStatus}/>
+        <TodoList todo={this.state.todos} changeStatus={this.changeStatus} editing={this.editing}/>
         <Footer />
       </div >
     );

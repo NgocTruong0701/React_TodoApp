@@ -16,14 +16,17 @@ class ToDoHeader extends React.Component {
 
     handleKeyPress = (event) => {
         // console.log(event);
-        if(event.key === 'Enter'){
-           this.props.addTodoItem(this.state.inputValue);
+        if (event.key === 'Enter') {
+            if (this.state.inputValue !== '') {
+                this.props.addTodoItem(this.state.inputValue);
+                this.setState({inputValue: ''});
+            }
         }
     }
 
-    render() {
-        return(
-            <input className="input" type="text" placeholder='What need to be done?' onChange={this.handleInputChange} onKeyDown={this.handleKeyPress}/>
+    render() {  
+        return (
+            <input className="input" type="text" placeholder='What need to be done?' value={this.state.inputValue} onChange={this.handleInputChange} onKeyDown={this.handleKeyPress} />
         );
     }
 }
