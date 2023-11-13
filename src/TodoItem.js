@@ -6,11 +6,27 @@ export default class TodoItem extends React.Component {
         super(props);
         this.state = {
             editingId: null,
+            newValue: '',
         }
     }
 
     setEditingId = (id) => {
         this.setState({ editingId: id });
+    }
+
+    handleKeyPress = (event) => {
+        // console.log(event);
+        if (event.key === 'Enter') {
+            if (this.state.newValue !== '') {
+                this.props.editing(this.state.editingId,this.state.newValue);
+                this.setState({newValue: ''});
+                debugger;
+            }
+        }
+    }
+
+    handleEditChange = (event) =>{
+        this.setState({newValue: event.target.value});
     }
 
     render() {
@@ -24,7 +40,7 @@ export default class TodoItem extends React.Component {
                             <input
                                 type="text"
                                 defaultValue={this.props.value}
-                            // onChange={(e) => handleEditChange(this.props.id, e.target.value)}
+                                onChange={this.handleEditChange}
                             />
                         ) :
                             (
