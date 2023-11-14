@@ -13,16 +13,23 @@ class App extends React.Component {
         { id: 2, text: 'Go to lunch', status: false },
         { id: 3, text: 'Go to lunch 2', status: true },
       ],
+      todoFilter :  [
+        { id: 1, text: 'Go to School', status: false },
+        { id: 2, text: 'Go to lunch', status: false },
+        { id: 3, text: 'Go to lunch 2', status: true },
+      ],
+      status: undefined
     };
   }
 
-  addTodoItem = (item) => {
+  addTodoItem = (item) => {    
     const todoItem = {
-      id: this.state.todos.length + 1,
+      id: (this.state.todos.length ? Math.max(...this.state.todos.map(i => i.id)) : 0) + 1,
       text: item,
       status: false,
     };
     this.setState({ todos: [todoItem, ...this.state.todos] });
+    this.applyFiter(this.state.status, [todoItem, ...this.state.todos]);
   }
 
   changeStatus = (id) => {
@@ -39,6 +46,8 @@ class App extends React.Component {
 
     // Cập nhật trạng thái mới cho danh sách todos
     this.setState({ todos: updatedTodos });
+    
+    this.applyFiter(this.state.status, updatedTodos);
   }
 
   editing = (id, newValue) => {
@@ -53,6 +62,18 @@ class App extends React.Component {
     });
 
     this.setState({ todos: updatedTodos });
+    this.applyFiter(this.state.status, updatedTodos);
+  }
+
+  remove = (id) => {
+    const updatedTodos = this.state.todos.filter(todo => todo.id !== id);
+    this.setState({ todos: updatedTodos });
+    this.applyFiter(this.state.status, updatedTodos);
+  }
+
+  applyFiter = (status, todos) => {
+    const updatedTodos = (todos || this.state.todos).filter(todo => status === undefined || todo.status === status);
+    this.setState({ todoFilter: updatedTodos, status: status });
   }
 
   render(){
@@ -60,8 +81,8 @@ class App extends React.Component {
       <div className = "App" >
         <h1>todos</h1>
         <ToDoHeader addTodoItem = {this.addTodoItem}/>
-        <TodoList todo={this.state.todos} changeStatus={this.changeStatus} editing={this.editing}/>
-        <Footer />
+        <TodoList todo={this.state.todoFilter} changeStatus={this.changeStatus} editing={this.editing} remove={this.remove}/>
+        <Footer applyFiter={this.applyFiter} />
       </div >
     );
   }

@@ -20,7 +20,7 @@ export default class TodoItem extends React.Component {
             if (this.state.newValue !== '') {
                 this.props.editing(this.state.editingId,this.state.newValue);
                 this.setState({newValue: ''});
-                debugger;
+                this.setState({editingId: null});
             }
         }
     }
@@ -33,7 +33,8 @@ export default class TodoItem extends React.Component {
         return (
             <div className="todoItem">
                 <div className="container">
-                    <input type='checkbox' checked={this.props.status} id={this.props.id} onChange={() => this.props.changeStatus(this.props.id)} />
+                    <input type='checkbox' checked={this.props.status} onChange={() => this.props.changeStatus(this.props.id)} />
+                    {/* {console.log(this.state.editingId === this.props.id, this.props.id)} */}
                     {
                         this.state.editingId === this.props.id ? (
                             // Hiển thị ô nhập để chỉnh sửa
@@ -41,12 +42,16 @@ export default class TodoItem extends React.Component {
                                 type="text"
                                 defaultValue={this.props.value}
                                 onChange={this.handleEditChange}
+                                onKeyDown={this.handleKeyPress}
                             />
                         ) :
                             (
-                                <label htmlFor={this.props.id} className={this.props.status ? "checkedLabel" : ""} onDoubleClick={this.setEditingId(this.props.id)}>
-                                    {this.props.value}
-                                </label>
+                                <>
+                                    <label htmlFor={this.props.id} className={this.props.status ? "checkedLabel" : ""} onDoubleClick={() => {this.setEditingId(this.props.id)}}>
+                                        {this.props.value}
+                                    </label>
+                                    <label onClick={() => {this.props.remove(this.props.id)}}>X</label>
+                                </>
                             )
                     }
                     {/* <label htmlFor={this.props.id} className={this.props.status ? "checkedLabel" : ""} onDoubleClick={this.setEditingId(this.props.id)}>

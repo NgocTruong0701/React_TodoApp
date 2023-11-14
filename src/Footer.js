@@ -1,4 +1,5 @@
 import React from 'react';
+import './Footer.css';
 
 export default class Footer extends React.Component {
     constructor(props) {
@@ -10,9 +11,9 @@ export default class Footer extends React.Component {
             <div className='footerContainer'>
                 <div className='countItem'></div>
                 <div className='actionButton'>
-                    <button className='button'>All</button>
-                    <button className='button'>Active</button>
-                    <button className='button'>Completed</button>
+                    <button className='button' onClick={() => {this.props.applyFiter()}}>All</button>
+                    <button className='button' onClick={() => {this.props.applyFiter(false)}}>Active</button>
+                    <button className='button' onClick={() => {this.props.applyFiter(true)}}>Completed</button>
                 </div>
             </div>
         )
