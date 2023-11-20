@@ -13,28 +13,26 @@ class App extends React.Component {
         { id: 2, text: 'Go to lunch', status: false },
         { id: 3, text: 'Go to lunch 2', status: true },
       ],
-      todoFilter :  [
-        { id: 1, text: 'Go to School', status: false },
-        { id: 2, text: 'Go to lunch', status: false },
-        { id: 3, text: 'Go to lunch 2', status: true },
-      ],
       status: undefined
     };
   }
+  todosFilter = [];
 
-  addTodoItem = (item) => {    
+  addTodoItem = (item) => {   
+    const {todos} = this.state; 
     const todoItem = {
-      id: (this.state.todos.length ? Math.max(...this.state.todos.map(i => i.id)) : 0) + 1,
+      id: (todos.length ? Math.max(...todos.map(i => i.id)) : 0) + 1,
       text: item,
       status: false,
     };
-    this.setState({ todos: [todoItem, ...this.state.todos] });
-    this.applyFiter(this.state.status, [todoItem, ...this.state.todos]);
+    this.setState({ todos: [todoItem, ...todos] });
+    // this.applyFiter(this.state.status, [todoItem, ...this.state.todos]);
   }
 
   changeStatus = (id) => {
     // Lấy danh sách công việc mới với trạng thái của công việc có id tương ứng đã thay đổi
-    const updatedTodos = this.state.todos.map(todo => {
+    let {todos} = this.state;
+    todos = todos.map(todo => {
       if (todo.id === id) {
         return {
           ...todo,
@@ -45,13 +43,14 @@ class App extends React.Component {
     });
 
     // Cập nhật trạng thái mới cho danh sách todos
-    this.setState({ todos: updatedTodos });
+    this.setState({ todos });
     
-    this.applyFiter(this.state.status, updatedTodos);
+    // this.applyFiter(this.state.status, updatedTodos);
   }
 
   editing = (id, newValue) => {
-    const updatedTodos = this.state.todos.map((todo) => {
+    let {todos} = this.state;
+    todos = todos.map((todo) => {
       if(todo.id === id){
         return {
           ...todo,
@@ -61,17 +60,20 @@ class App extends React.Component {
       return todo;
     });
 
-    this.setState({ todos: updatedTodos });
-    this.applyFiter(this.state.status, updatedTodos);
+    this.setState({todos});
+    // this.applyFiter(this.state.status, updatedTodos);
   }
 
   remove = (id) => {
-    const updatedTodos = this.state.todos.filter(todo => todo.id !== id);
-    this.setState({ todos: updatedTodos });
-    this.applyFiter(this.state.status, updatedTodos);
+    let {todos} = this.state.todos
+    todos = todos.filter(todo => todo.id !== id);
+    this.setState({ todos });
+    // this.applyFiter(this.state.status, updatedTodos);
   }
 
   applyFiter = (status, todos) => {
+    this.todosFilter = [...todos];
+    console.log(this.todosFilter)
     const updatedTodos = (todos || this.state.todos).filter(todo => status === undefined || todo.status === status);
     this.setState({ todoFilter: updatedTodos, status: status });
   }
@@ -81,7 +83,7 @@ class App extends React.Component {
       <div className = "App" >
         <h1>todos</h1>
         <ToDoHeader addTodoItem = {this.addTodoItem}/>
-        <TodoList todo={this.state.todoFilter} changeStatus={this.changeStatus} editing={this.editing} remove={this.remove}/>
+        <TodoList todo={this.state.todos} changeStatus={this.changeStatus} editing={this.editing} remove={this.remove}/>
         <Footer applyFiter={this.applyFiter} />
       </div >
     );
