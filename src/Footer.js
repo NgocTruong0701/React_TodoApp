@@ -7,13 +7,14 @@ export default class Footer extends React.Component {
     }
 
     render() {
+        const {applyFiter, ACTION, count} = this.props;
         return (
             <div className='footerContainer'>
-                <div className='countItem'></div>
+                <div className='countItem'>{count}</div>
                 <div className='actionButton'>
-                    <button className='button' onClick={() => {this.props.applyFiter()}}>All</button>
-                    <button className='button' onClick={() => {this.props.applyFiter(false)}}>Active</button>
-                    <button className='button' onClick={() => {this.props.applyFiter(true)}}>Completed</button>
+                    <button className='button' onClick={() => {applyFiter(ACTION.ALL)}}>All</button>
+                    <button className='button' onClick={() => {applyFiter(ACTION.ACTIVE)}}>Active</button>
+                    <button className='button' onClick={() => {applyFiter(ACTION.COMPLETE)}}>Completed</button>
                 </div>
             </div>
         )

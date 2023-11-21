@@ -13,10 +13,23 @@ class App extends React.Component {
         { id: 2, text: 'Go to lunch', status: false },
         { id: 3, text: 'Go to lunch 2', status: true },
       ],
-      status: undefined
+      action: this.ACTION.ALL,
+      countComplete: 0,
     };
   }
-  todosFilter = [];
+  ACTION = {
+    ALL: 0,
+    ACTIVE: 1,
+    COMPLETE: 2,
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    let {todos} = this.state;
+    if (prevState.todos !== todos) {
+      const countComplete = todos.filter(todo => todo.status).length;
+      this.setState({ countComplete });
+    }
+  }
 
   addTodoItem = (item) => {   
     const {todos} = this.state; 
@@ -65,24 +78,14 @@ class App extends React.Component {
   }
 
   remove = (id) => {
-    let {todos} = this.state.todos
+    let {todos} = this.state
     todos = todos.filter(todo => todo.id !== id);
     this.setState({ todos });
     // this.applyFiter(this.state.status, updatedTodos);
   }
 
-  applyFiter = (status) => {
-    if(status === undefined){
-      let { todos } = this.state;
-      todos = [...this.todosFilter];
-      this.setState({ todos, status });
-    }
-    else{
-      let {todos} = this.state;
-      this.todosFilter = [...todos];
-      let updatedTodos = (todos).filter(todo => todo.status === status);
-      this.setState({ todos: updatedTodos, status: status });
-    }
+  applyFiter = action => {
+    this.setState({ action });
   }
 
   render(){
@@ -95,8 +98,9 @@ class App extends React.Component {
             changeStatus={this.changeStatus} 
             editing={this.editing} 
             remove={this.remove}
+            action={this.state.action}
         />
-        <Footer applyFiter={this.applyFiter} />
+        <Footer applyFiter={this.applyFiter} ACTION={this.ACTION} count={this.state.countComplete}/>
       </div >
     );
   }

@@ -7,14 +7,42 @@ export default class TodoList extends React.Component {
         super(props);
     }
     
-    render(){
-        return(
+    renderTodoItems = () => {
+        const { action, todo, changeStatus, editing, remove } = this.props;
+
+        if (action !== 0) {
+            return todo
+                .filter(item => item.status === (action === 1 ? true : false))
+                .map(item => (
+                    <TodoItem
+                        key={item.id}
+                        id={item.id}
+                        value={item.text}
+                        status={item.status}
+                        changeStatus={changeStatus}
+                        editing={editing}
+                        remove={remove}
+                    />
+                ));
+        } else {
+            return todo.map(item => (
+                <TodoItem
+                    key={item.id}
+                    id={item.id}
+                    value={item.text}
+                    status={item.status}
+                    changeStatus={changeStatus}
+                    editing={editing}
+                    remove={remove}
+                />
+            ));
+        }
+    };
+
+    render() {
+        return (
             <div className="ListTodoItem">
-                {
-                    this.props.todo.map(item => {
-                       return <TodoItem key={item.id} id={item.id} value={item.text} status={item.status} changeStatus={this.props.changeStatus} editing={this.props.editing} remove={this.props.remove}/>
-                    })
-                }
+                {this.renderTodoItems()}
             </div>
         )
     }
