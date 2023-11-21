@@ -26,7 +26,14 @@ class ToDoHeader extends React.Component {
 
     render() {  
         return (
-            <input className="input" type="text" placeholder='What need to be done?' value={this.state.inputValue} onChange={this.handleInputChange} onKeyDown={this.handleKeyPress} />
+            <input 
+                className="input"
+                type="text" 
+                placeholder='What need to be done?' 
+                value={this.state.inputValue} 
+                onChange={this.handleInputChange} 
+                onKeyDown={this.handleKeyPress} 
+            />
         );
     }
 }

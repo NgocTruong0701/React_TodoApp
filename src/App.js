@@ -71,11 +71,18 @@ class App extends React.Component {
     // this.applyFiter(this.state.status, updatedTodos);
   }
 
-  applyFiter = (status, todos) => {
-    this.todosFilter = [...todos];
-    console.log(this.todosFilter)
-    const updatedTodos = (todos || this.state.todos).filter(todo => status === undefined || todo.status === status);
-    this.setState({ todoFilter: updatedTodos, status: status });
+  applyFiter = (status) => {
+    if(status === undefined){
+      let { todos } = this.state;
+      todos = [...this.todosFilter];
+      this.setState({ todos, status });
+    }
+    else{
+      let {todos} = this.state;
+      this.todosFilter = [...todos];
+      let updatedTodos = (todos).filter(todo => todo.status === status);
+      this.setState({ todos: updatedTodos, status: status });
+    }
   }
 
   render(){
@@ -83,7 +90,12 @@ class App extends React.Component {
       <div className = "App" >
         <h1>todos</h1>
         <ToDoHeader addTodoItem = {this.addTodoItem}/>
-        <TodoList todo={this.state.todos} changeStatus={this.changeStatus} editing={this.editing} remove={this.remove}/>
+        <TodoList
+            todo={this.state.todos} 
+            changeStatus={this.changeStatus} 
+            editing={this.editing} 
+            remove={this.remove}
+        />
         <Footer applyFiter={this.applyFiter} />
       </div >
     );
