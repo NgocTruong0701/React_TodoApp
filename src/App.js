@@ -14,7 +14,10 @@ class App extends React.Component {
         { id: 3, text: 'Go to lunch 2', status: true },
       ],
       action: this.ACTION.ALL,
-      countComplete: 0,
+      editValue: '',
+      editingId: 0,
+      countComplete: 1,
+      currentPage: 1,
     };
   }
   ACTION = {
@@ -24,27 +27,27 @@ class App extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    let {todos} = this.state;
+    let { todos } = this.state;
     if (prevState.todos !== todos) {
       const countComplete = todos.filter(todo => todo.status).length;
       this.setState({ countComplete });
     }
   }
 
-  addTodoItem = (item) => {   
-    const {todos} = this.state; 
+  addTodoItem = (item) => {
+    // console.log('â');
+    const { todos } = this.state;
     const todoItem = {
       id: (todos.length ? Math.max(...todos.map(i => i.id)) : 0) + 1,
       text: item,
       status: false,
     };
     this.setState({ todos: [todoItem, ...todos] });
-    // this.applyFiter(this.state.status, [todoItem, ...this.state.todos]);
   }
 
   changeStatus = (id) => {
     // Lấy danh sách công việc mới với trạng thái của công việc có id tương ứng đã thay đổi
-    let {todos} = this.state;
+    let { todos } = this.state;
     todos = todos.map(todo => {
       if (todo.id === id) {
         return {
@@ -57,14 +60,12 @@ class App extends React.Component {
 
     // Cập nhật trạng thái mới cho danh sách todos
     this.setState({ todos });
-    
-    // this.applyFiter(this.state.status, updatedTodos);
   }
 
   editing = (id, newValue) => {
-    let {todos} = this.state;
+    let { todos } = this.state;
     todos = todos.map((todo) => {
-      if(todo.id === id){
+      if (todo.id === id) {
         return {
           ...todo,
           text: newValue,
@@ -73,34 +74,54 @@ class App extends React.Component {
       return todo;
     });
 
-    this.setState({todos});
-    // this.applyFiter(this.state.status, updatedTodos);
+    this.setState({ todos });
+    this.setState({ editingId: 0, editValue: '' });
+  }
+
+  setEditingId = (id, value) => {
+    this.setState({ editingId: id, editValue: value });
   }
 
   remove = (id) => {
-    let {todos} = this.state
+    let { todos } = this.state
     todos = todos.filter(todo => todo.id !== id);
     this.setState({ todos });
-    // this.applyFiter(this.state.status, updatedTodos);
   }
 
   applyFiter = action => {
     this.setState({ action });
   }
 
-  render(){
-      return(
-      <div className = "App" >
+  handlePagination = (pageNumber) => {
+    this.setState({ currentPage: pageNumber });
+  }
+
+  render() {
+    return (
+      <div className="App" >
         <h1>todos</h1>
-        <ToDoHeader addTodoItem = {this.addTodoItem}/>
-        <TodoList
-            todo={this.state.todos} 
-            changeStatus={this.changeStatus} 
-            editing={this.editing} 
-            remove={this.remove}
-            action={this.state.action}
+        <ToDoHeader
+          addTodoItem={this.addTodoItem}
+          editingId={this.state.editingId}
+          editing={this.editing}
+          editValue={this.state.editValue}
         />
-        <Footer applyFiter={this.applyFiter} ACTION={this.ACTION} count={this.state.countComplete}/>
+        <TodoList
+          todo={this.state.todos}
+          changeStatus={this.changeStatus}
+          editing={this.editing}
+          remove={this.remove}
+          action={this.state.action}
+          setEditingId={this.setEditingId}
+          currentPage={this.state.currentPage}
+        />
+        <Footer
+          applyFiter={this.applyFiter}
+          ACTION={this.ACTION}
+          count={this.state.countComplete}
+          currentPage={this.state.currentPage}
+          handlePagination={this.handlePagination}
+        />
       </div >
     );
   }

@@ -4,22 +4,25 @@ import './Head.css';
 class ToDoHeader extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            inputValue: '',
-        };
+        this.inputRef = React.createRef();
     }
 
-    handleInputChange = (event) => {
-        // Lấy giá trị từ input vale và cập nhật vào state inputvalue
-        this.setState({ inputValue: event.target.value });
+    componentDidUpdate() {
+        if(this.props.editingId) this.inputRef.current.value = this.props.editValue;
     }
 
     handleKeyPress = (event) => {
+        let {value} = this.inputRef.current;
         // console.log(event);
         if (event.key === 'Enter') {
-            if (this.state.inputValue !== '') {
-                this.props.addTodoItem(this.state.inputValue);
-                this.setState({inputValue: ''});
+            if (value !== '') {
+                if(this.props.editingId) {
+                    this.props.editing(this.props.editingId, value)
+                }
+                else {
+                    this.props.addTodoItem(value);
+                }
+                this.inputRef.current.value = '';
             }
         }
     }
@@ -30,8 +33,7 @@ class ToDoHeader extends React.Component {
                 className="input"
                 type="text" 
                 placeholder='What need to be done?' 
-                value={this.state.inputValue} 
-                onChange={this.handleInputChange} 
+                ref={this.inputRef}
                 onKeyDown={this.handleKeyPress} 
             />
         );
