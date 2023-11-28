@@ -3,6 +3,7 @@ import ToDoHeader from './Head';
 import TodoList from './ToDoList';
 import Footer from './Footer';
 import React from 'react';
+import { ACTION } from './constant';
 
 class App extends React.Component {
   constructor(props) {
@@ -13,17 +14,12 @@ class App extends React.Component {
         { id: 2, text: 'Go to lunch', status: false },
         { id: 3, text: 'Go to lunch 2', status: true },
       ],
-      action: this.ACTION.ALL,
+      action: ACTION.ALL,
       editValue: '',
       editingId: 0,
       countComplete: 1,
       currentPage: 1,
     };
-  }
-  ACTION = {
-    ALL: 0,
-    ACTIVE: 1,
-    COMPLETE: 2,
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -46,36 +42,21 @@ class App extends React.Component {
   }
 
   changeStatus = (id) => {
-    // Lấy danh sách công việc mới với trạng thái của công việc có id tương ứng đã thay đổi
-    let { todos } = this.state;
-    todos = todos.map(todo => {
-      if (todo.id === id) {
-        return {
-          ...todo,
-          status: !todo.status, // Đảo ngược trạng thái
-        };
-      }
-      return todo;
-    });
-
-    // Cập nhật trạng thái mới cho danh sách todos
-    this.setState({ todos });
+    this.setState(prevState => ({
+      todos: prevState.todos.map(todo =>
+        todo.id === id ? { ...todo, status: !todo.status } : todo
+      )
+    }));
   }
 
   editing = (id, newValue) => {
-    let { todos } = this.state;
-    todos = todos.map((todo) => {
-      if (todo.id === id) {
-        return {
-          ...todo,
-          text: newValue,
-        }
-      }
-      return todo;
-    });
-
-    this.setState({ todos });
-    this.setState({ editingId: 0, editValue: '' });
+    this.setState(prevState => ({
+      todos: prevState.todos.map(todo =>
+        todo.id === id ? { ...todo, text: newValue } : todo
+      ),
+      editingId: 0,
+      editValue: ''
+    }));
   }
 
   setEditingId = (id, value) => {
@@ -83,18 +64,28 @@ class App extends React.Component {
   }
 
   remove = (id) => {
-    let { todos } = this.state
-    todos = todos.filter(todo => todo.id !== id);
-    this.setState({ todos });
+    this.setState(prevState => ({
+      todos: prevState.todos.filter(todo => todo.id !== id)
+    }));
   }
 
   applyFiter = action => {
     this.setState({ action });
   }
 
-  handlePagination = (pageNumber) => {
-    this.setState({ currentPage: pageNumber });
+  handlePagination = (currentPage) => {
+    this.setState(prevState => {
+      const {length} = prevState.todos;
+  
+      if (currentPage <= 0) {
+        currentPage = 1;
+      } else if (currentPage > length) {
+        currentPage = length;
+      }
+      return { currentPage };
+    });
   }
+  
 
   render() {
     return (
@@ -107,7 +98,7 @@ class App extends React.Component {
           editValue={this.state.editValue}
         />
         <TodoList
-          todo={this.state.todos}
+          todos={this.state.todos}
           changeStatus={this.changeStatus}
           editing={this.editing}
           remove={this.remove}
@@ -117,7 +108,6 @@ class App extends React.Component {
         />
         <Footer
           applyFiter={this.applyFiter}
-          ACTION={this.ACTION}
           count={this.state.countComplete}
           currentPage={this.state.currentPage}
           handlePagination={this.handlePagination}

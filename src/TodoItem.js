@@ -14,7 +14,7 @@ export default class TodoItem extends React.Component {
         let {id, value, changeStatus, status, remove} = this.props;
         return (
             <div className="todoItem">
-                <div className="container" onDoubleClick={() => {this.setEditingId(id, value) }}>
+                <div className="container">
                     <input
                         type='checkbox'
                         checked={status}
@@ -24,6 +24,7 @@ export default class TodoItem extends React.Component {
                         <label
                             htmlFor={this.props.id}
                             className={this.props.status ? "checkedLabel" : ""}
+                            onClick={() => {this.setEditingId(id, value) }}
                         >
                             {value}
                         </label>
