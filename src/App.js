@@ -4,6 +4,7 @@ import TodoList from './ToDoList';
 import Footer from './Footer';
 import React from 'react';
 import { ACTION } from './constant';
+import {ThemeContext} from './ThemeProvider'
 
 class App extends React.Component {
   constructor(props) {
@@ -31,7 +32,6 @@ class App extends React.Component {
   }
 
   addTodoItem = (item) => {
-    // console.log('â');
     const { todos } = this.state;
     const todoItem = {
       id: (todos.length ? Math.max(...todos.map(i => i.id)) : 0) + 1,
@@ -75,8 +75,8 @@ class App extends React.Component {
 
   handlePagination = (currentPage) => {
     this.setState(prevState => {
-      const {length} = prevState.todos;
-  
+      const { length } = prevState.todos;
+
       if (currentPage <= 0) {
         currentPage = 1;
       } else if (currentPage > length) {
@@ -85,37 +85,42 @@ class App extends React.Component {
       return { currentPage };
     });
   }
-  
+
 
   render() {
+    const { toggleTheme, theme } = this.context;
+    console.log(this.context);
     return (
-      <div className="App" >
-        <h1>todos</h1>
-        <ToDoHeader
-          addTodoItem={this.addTodoItem}
-          editingId={this.state.editingId}
-          editing={this.editing}
-          editValue={this.state.editValue}
-        />
-        <TodoList
-          todos={this.state.todos}
-          changeStatus={this.changeStatus}
-          editing={this.editing}
-          remove={this.remove}
-          action={this.state.action}
-          setEditingId={this.setEditingId}
-          currentPage={this.state.currentPage}
-        />
-        <Footer
-          applyFiter={this.applyFiter}
-          count={this.state.countComplete}
-          currentPage={this.state.currentPage}
-          handlePagination={this.handlePagination}
-        />
-      </div >
+      <div className={theme}>
+        <div className="App" >
+          <button onClick={toggleTheme}>Toggle Theme</button>
+          <h1>todos</h1>
+          <ToDoHeader
+            addTodoItem={this.addTodoItem}
+            editingId={this.state.editingId}
+            editing={this.editing}
+            editValue={this.state.editValue}
+          />
+          <TodoList
+            todos={this.state.todos}
+            changeStatus={this.changeStatus}
+            editing={this.editing}
+            remove={this.remove}
+            action={this.state.action}
+            setEditingId={this.setEditingId}
+            currentPage={this.state.currentPage}
+          />
+          <Footer
+            applyFiter={this.applyFiter}
+            count={this.state.countComplete}
+            currentPage={this.state.currentPage}
+            handlePagination={this.handlePagination}
+          />
+        </div >
+      </div>
     );
   }
 
 }
-
+App.contextType = ThemeContext 
 export default App;
