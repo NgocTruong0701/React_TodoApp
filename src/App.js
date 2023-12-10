@@ -15,6 +15,14 @@ class App extends React.Component {
         { id: 1, text: 'Go to School', status: false },
         { id: 2, text: 'Go to lunch', status: false },
         { id: 3, text: 'Go to lunch 2', status: true },
+        { id: 4, text: 'Go to lunch', status: false },
+        { id: 5, text: 'Go to lunch 2', status: true },
+        { id: 6, text: 'Go to lunch', status: false },
+        { id: 7, text: 'Go to lunch 2', status: true },
+        { id: 8, text: 'Go to lunch', status: false },
+        { id: 9, text: 'Go to lunch 2', status: true },
+        { id: 10, text: 'Go to lunch', status: false },
+        { id: 11, text: 'Go to lunch 2', status: true },
       ],
       action: ACTION.ALL,
       editValue: '',
@@ -91,7 +99,7 @@ class App extends React.Component {
           editing={this.editing}
           editValue={this.state.editValue}
         />
-        <TodoList
+        {/* <TodoList
           todos={this.state.todos}
           changeStatus={this.changeStatus}
           editing={this.editing}
@@ -99,7 +107,8 @@ class App extends React.Component {
           action={this.state.action}
           setEditingId={this.setEditingId}
           currentPage={this.state.currentPage}
-        />
+        /> */}
+         <ScrollableList todos={this.state.todos} />
         <Footer
           applyFiter={this.applyFiter}
           count={this.state.countComplete}
@@ -107,7 +116,6 @@ class App extends React.Component {
           handlePagination={this.handlePagination}
           length= {this.state.todos.length}
         />
-        <ScrollableList todos={this.state.todos} />
       </div >
     );
   }

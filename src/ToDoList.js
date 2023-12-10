@@ -13,8 +13,10 @@ export default class TodoList extends React.Component {
         const { action, todos, changeStatus, editing, remove, setEditingId, currentPage } = this.props;
         const indexOfLastItem = currentPage * LIMIT;
         const indexOfFirstItem = indexOfLastItem - LIMIT;
-        const currentTodos = action === ACTION.ALL ? todos.slice(indexOfFirstItem, indexOfLastItem)
-            : todos.filter(item => item.status === (action === ACTION.ACTIVE)).slice(indexOfFirstItem, indexOfLastItem);
+        // const currentTodos = action === ACTION.ALL ? todos.slice(indexOfFirstItem, indexOfLastItem)
+        //     : todos.filter(item => item.status === (action === ACTION.ACTIVE)).slice(indexOfFirstItem, indexOfLastItem);
+
+        let currentTodos = todos;
 
         return currentTodos.map(item => (
             <TodoItem

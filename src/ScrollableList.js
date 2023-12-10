@@ -12,19 +12,19 @@ class ScrollableList extends React.Component {
             itemsPerPage: 5,
         }
 
-        this.handleScroll = this.handleScroll.bind(this);
+        this.handleScroll = this.handleScroll.bind(this); // Bind 'this' cho phương thức handleScroll
     }
 
     componentDidMount() {
-        window.addEventListener('scroll', this.handleScroll);
+        this.scrollableDiv.addEventListener('scroll', this.handleScroll);
     }
 
     componentWillUnmount() {
-        window.removeEventListener('scroll', this.handleScroll);
+        this.scrollableDiv.removeEventListener('scroll', this.handleScroll);
     }
 
-    fetchMoreData(){
-        if(!this.state.loading) {
+    fetchMoreData() {
+        if (!this.state.loading) {
             const { currentPage, itemsPerPage, todos } = this.state;
             const start = currentPage * itemsPerPage;
             const end = start + itemsPerPage;
@@ -43,10 +43,9 @@ class ScrollableList extends React.Component {
         }
     }
 
-    handleScroll() {
-        const { innerHeight, scrollY } = window;
-        const { offsetHeight } = document.documentElement;
-        const atBottom = innerHeight + scrollY >= offsetHeight - 100;
+    handleScroll = () => {
+        const { clientHeight, scrollHeight, scrollTop } = this.scrollableDiv;
+        const atBottom = clientHeight + scrollTop >= scrollHeight - 100;
 
         if (atBottom) {
             this.fetchMoreData();
@@ -55,7 +54,10 @@ class ScrollableList extends React.Component {
 
     render() {
         return (
-            <div style={{ height: '500px', overflowY: 'scroll' }}>
+            <div
+                style={{ height: '500px', overflowY: 'scroll' }}
+                ref={(div) => { this.scrollableDiv = div; }}
+            >
                 <TodoList todos={this.state.todos} />
                 {this.state.loading && <p>Loading...</p>}
             </div>
