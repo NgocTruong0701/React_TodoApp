@@ -74,16 +74,7 @@ class App extends React.Component {
   }
 
   handlePagination = (currentPage) => {
-    this.setState(prevState => {
-      const {length} = prevState.todos;
-  
-      if (currentPage <= 0) {
-        currentPage = 1;
-      } else if (currentPage > length) {
-        currentPage = length;
-      }
-      return { currentPage };
-    });
+    this.setState({currentPage});
   }
   
 
@@ -111,6 +102,7 @@ class App extends React.Component {
           count={this.state.countComplete}
           currentPage={this.state.currentPage}
           handlePagination={this.handlePagination}
+          length= {this.state.todos.length}
         />
       </div >
     );

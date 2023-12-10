@@ -1,6 +1,6 @@
 import React from 'react';
 import './Footer.css';
-import { ACTION } from './constant';
+import { ACTION, LIMIT } from './constant';
 
 export default class Footer extends React.Component {
     constructor(props) {
@@ -8,7 +8,7 @@ export default class Footer extends React.Component {
     }
 
     render() {
-        const {applyFiter, count, currentPage, handlePagination} = this.props;
+        let {applyFiter, count, currentPage, handlePagination, length} = this.props;
         return (
             <div className='footerContainer'>
                 <div className='countItem'>{count}</div>
@@ -18,10 +18,16 @@ export default class Footer extends React.Component {
                     <button className='button' onClick={() => {applyFiter(ACTION.COMPLETE)}}>Completed</button>
                 </div>
                 <div className='actionButton'>
-                    <button onClick={() => handlePagination(currentPage - 1)}>
+                    <button disabled={currentPage <= 1} onClick={() => {
+                        currentPage = currentPage <= 0 ? currentPage : currentPage - 1;
+                        handlePagination(currentPage)
+                    }}>
                         Prev
                     </button>
-                    <button onClick={() => handlePagination(currentPage + 1)}>
+                    <button disabled={currentPage >= (length / LIMIT)} onClick={() => {
+                        currentPage = currentPage > length ? currentPage : currentPage + 1;
+                        handlePagination(currentPage)
+                    }}>
                         Next
                     </button>
                 </div>

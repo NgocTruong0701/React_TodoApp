@@ -8,33 +8,35 @@ class ToDoHeader extends React.Component {
     }
 
     componentDidUpdate() {
-        if(this.props.editingId) this.inputRef.current.value = this.props.editValue;
+        let {editingId, editValue} = this.props
+        let {value} = this.inputRef.current
+        if (editingId) value = editValue;
     }
 
     handleKeyPress = (event) => {
-        let {value} = this.inputRef.current;
-        // console.log(event);
+        let { value } = this.inputRef.current;
+        const { editing, editingId, addTodoItem } = this.props;
         if (event.key === 'Enter') {
             if (value !== '') {
-                if(this.props.editingId) {
-                    this.props.editing(this.props.editingId, value)
+                if (editingId) {
+                    editing(editingId, value)
                 }
                 else {
-                    this.props.addTodoItem(value);
+                    addTodoItem(value);
                 }
                 this.inputRef.current.value = '';
             }
         }
     }
 
-    render() {  
+    render() {
         return (
-            <input 
+            <input
                 className="input"
-                type="text" 
-                placeholder='What need to be done?' 
+                type="text"
+                placeholder='What need to be done?'
                 ref={this.inputRef}
-                onKeyDown={this.handleKeyPress} 
+                onKeyDown={this.handleKeyPress}
             />
         );
     }
