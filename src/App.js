@@ -5,6 +5,7 @@ import Footer from './Footer';
 import React from 'react';
 import { ACTION } from './constant';
 import {ThemeContext} from './ThemeProvider'
+import ScrollableList from './ScrollableList';
 
 class App extends React.Component {
   constructor(props) {
@@ -106,6 +107,7 @@ class App extends React.Component {
           handlePagination={this.handlePagination}
           length= {this.state.todos.length}
         />
+        <ScrollableList todos={this.state.todos} />
       </div >
     );
   }

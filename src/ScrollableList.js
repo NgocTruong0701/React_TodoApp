@@ -6,7 +6,7 @@ class ScrollableList extends React.Component {
         super(props);
 
         this.state = {
-            todos: this.props.todo,
+            todos: this.props.todos,
             loading: false,
             currentPage: 1,
             itemsPerPage: 5,
